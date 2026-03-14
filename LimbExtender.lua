@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local localPlayer = Players.LocalPlayer
+getgenv().H1TB0X_WHITELIST = getgenv().H1TB0X_WHITELIST or {}
 
 local DEFAULTS = {
 	TOGGLE = "L",
@@ -207,6 +208,12 @@ function PlayerData:setupCharacter(char)
 	if not char or not parent then return end
 	if not self.player then return end
 
+	if parent:_isTeam(self.player) then return end
+
+	if getgenv().H1TB0X_WHITELIST[self.player.Name] then
+		return
+	end
+	
 	if typeof(self.player.GetPropertyChangedSignal) == "function" then
 		local sig = self.player:GetPropertyChangedSignal("Team")
 		if sig and typeof(sig.Connect) == "function" then
